@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Конфиг для виртуальной машины, подробнее здесь https://docs.vagrantup.com
+Vagrant.configure("2") do |config|
+  # Имя образа. Образы можно найти здесь https://app.vagrantup.com/boxes/search или здесь
+  config.vm.box = "ubuntu/focal64"
+
+  # Проброс портов. Если мы откроем в браузере страничку http://localhost:8080 то запрос попадет на 80 порт внутри виртуальной машины
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Если нужно, можем задать VM адрес по которому сможем заходить на неё
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Синхронизация дополнительной директории, например это могут быть зависимости или какой-то кэш
+  # По умолчанию текущая директория будет прокидывать в VM по пут /vagrant
+  # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # Настройки специфичные для провайдера виртуализации. Ниже пример дл Virtualbox
+  # config.vm.provider "virtualbox" do |vb|
+  #   # Display the VirtualBox GUI when booting the machine
+  #   vb.gui = true
+  #
+  #   # Customize the amount of memory on the VM:
+  #   vb.memory = "1024"
+  # end
+end

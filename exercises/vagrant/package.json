@@ -1,0 +1,36 @@
+{
+  "name": "vagrant",
+  "version": "1.0.0",
+  "description": "Создадим изолированное окружение для разработки с помощью Vagrant и запустим внутри него [Fastify](https://github.com/fastify/fastify). Fastify – микрофреймворк на JavaScript, который позволяет создать простой сайт используя буквально 20 строк кода (скопированных из документации).",
+  "main": "app.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap \"test/**/*.test.js\"",
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -w -l info -P app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/YuryBor/devops_vagrant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/YuryBor/devops_vagrant/issues"
+  },
+  "homepage": "https://gitlab.com/YuryBor/devops_vagrant#readme",
+  "dependencies": {
+    "fastify": "^3.0.0",
+    "fastify-plugin": "^3.0.0",
+    "fastify-autoload": "^3.3.1",
+    "fastify-sensible": "^3.1.0",
+    "fastify-cli": "^2.13.0"
+  },
+  "devDependencies": {
+    "tap": "^15.0.9"
+  }
+}
