@@ -1,0 +1,15 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+
+  # Провижинг (настройка) с помощью Ansible
+  # https://www.vagrantup.com/docs/provisioning/ansible
+  config.vm.provision "ansible" do |ansible|
+    # Насколько подробно Ansible будет показывать вывод
+    ansible.verbose = "vv"
+    # Путь до плейбука на локальной машине
+    ansible.playbook = "playbook.yml"
+  end
+end

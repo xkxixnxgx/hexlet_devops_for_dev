@@ -1,0 +1,35 @@
+# плейбук состоит из списка плеев объектов в которых описаны хосты, задачи и тд
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
+- name: Setup application # Краткое описание происходящего
+  hosts: all # Хосты для которых выполняется ansible Для настройки вирутальной машины Vagrant указываем all
+  tasks:
+    - name: Say Hello! # Описание задачи
+      ansible.builtin.shell: echo "Hello!" # некий модуль, он может быть однострочным  ansible.builtin. указывает, что это встроенный модуль
+
+    - name: Install packages
+      # Выполнение задач требует изменения уровня доступа
+      # например иногда нужен root доступ, чтобы выполнить установку пакета через apt
+      # https://docs.ansible.com/ansible/latest/user_guide/become.html
+      become: yes
+      # Вызов модуля Ansible У каждого модуля свои параметры с которыми он вызывается
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html
+      ansible.builtin.apt:
+        name: curl
+        state: present
+        update_cache: true
+
+    - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+      become: yes
+      ansible.builtin.user:
+        name: johnd
+        comment: John Doe
+        uid: 1040
+        group: admin
+      # Задачи могут что-то возвращать после своего выполнения. Результат можно зарегистрировать в переменную
+      # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html#return-values
+      register: user_result
+
+    # Для отладки используется модуль debug
+    - name: Debug user_result
+      ansible.builtin.debug:
+        var: user_result
