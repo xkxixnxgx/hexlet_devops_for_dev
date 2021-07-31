@@ -1,0 +1,27 @@
+- hosts: all
+  tasks:
+    - name: Add GPG-key for apt repo nodejs
+      apt_key:
+        id: "68576280"
+        url: "https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280"
+
+    - name: Add nodesource repository into sources list
+      ansible.builtin.apt_repository:
+        repo: deb https://deb.nodesource.com/node_16.x focal main
+        state: nodesource
+
+    - name: Install the nodejs
+      apt:
+        name: nodejs
+
+    - name: This command will change the working directory to somedir/ and will only run when somedir/somelog.txt doesn't exist
+      ansible.builtin.shell: npm init -y fastify
+      args:
+        chdir: .
+        creates: package.json
+
+    - name: Add FASTIFY_ADDRESS to /etc/environment
+      ansible.builtin.lineinfile:
+        path: /etc/environment
+        regexp: 'FASTIFY_ADDRESS='
+        line: FASTIFY_ADDRESS=0.0.0.0
