@@ -6,6 +6,8 @@ test:
 lint:
 	hadolint Dockerfile
 
-# BEGIN
+build:
+	docker build . -t fastify
 
-# END
+run:
+	docker run -it -p 3000:3000 fastify
