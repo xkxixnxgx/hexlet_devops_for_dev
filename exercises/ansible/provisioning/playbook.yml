@@ -4,20 +4,24 @@
       apt_key:
         id: "68576280"
         url: "https://keyserver.ubuntu.com/pks/lookup?op=get&fingerprint=on&search=0x1655A0AB68576280"
+        state: present
+      become: yes
 
     - name: Add nodesource repository into sources list
       ansible.builtin.apt_repository:
         repo: deb https://deb.nodesource.com/node_16.x focal main
-        state: nodesource
+        state: present
+      become: yes
 
     - name: Install the nodejs
       apt:
         name: nodejs
+      become: yes
 
     - name: This command will change the working directory to somedir/ and will only run when somedir/somelog.txt doesn't exist
       ansible.builtin.shell: npm init -y fastify
       args:
-        chdir: .
+        chdir: /vagrant/
         creates: package.json
 
     - name: Add FASTIFY_ADDRESS to /etc/environment
@@ -25,3 +29,4 @@
         path: /etc/environment
         regexp: 'FASTIFY_ADDRESS='
         line: FASTIFY_ADDRESS=0.0.0.0
+      become: yes
