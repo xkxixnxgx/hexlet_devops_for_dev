@@ -1,0 +1,26 @@
+# Выполняем плейбук для всех хостов
+- hosts: all
+
+  # Описываем задачи, которые будет выполнять ansible
+  tasks:
+    # Подключаемся к сайту с помощью curl
+    - name: Using curl to connect to a www.ansible.com
+      ansible.builtin.shell: curl -sL http://www.ansible.com
+
+    # Таким образом, можно выполнить сразу несколько команд
+    - name: Go to home directory and connect to a www.ansible.com
+      ansible.builtin.shell: |
+        cd ~
+        curl -sL http://www.ansible.com
+
+    # Устанавливаем на удалённый хост пакеты foo и bar
+    - name: Install packages named foo and bar
+      ansible.builtin.apt:
+        name: ['foo', 'bar']
+        # Говорим ansible использовать последние версии пакетов
+        state: present
+        # Обновляем кеш. Аналог apt update
+        update_cache: true
+        # Так как apt требует прав суперпользователя (запуск с помощью sudo)
+        # для установки пакетов используем опцию become
+        become: yes
