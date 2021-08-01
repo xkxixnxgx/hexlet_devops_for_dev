@@ -1,0 +1,13 @@
+# Зависимости для ansible делятся на роли и и коллекции (ролей)
+# Роли и коллекции можно найти на https://galaxy.ansible.com/
+roles:
+  - name: geerlingguy.docker
+    # Без указания версии ставится самая последняя версия
+    version: '4.0.0'
+
+  - name: gantsign.oh-my-zsh
+
+  - name: markosamuli.asdf
+
+collections:
+  - community.general

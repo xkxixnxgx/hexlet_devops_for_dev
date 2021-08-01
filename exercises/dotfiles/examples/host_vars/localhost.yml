@@ -1,0 +1,9 @@
+# Имя файла это имя хоста, которое указано в инвентори файле
+# host_vars/<hostname>.yml - это соглашение по которому Ansible подгружает переменные
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html#understanding-variable-precedence
+
+# Синтаксис - обычный yml
+# Эти переменные будут привязаны к хосту, к ним можно обратиться в плейбуке
+
+param: abc
+param2: "{{ param }}"

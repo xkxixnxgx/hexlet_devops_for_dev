@@ -1,0 +1,111 @@
+- name: Install tools packages
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: install packages
+      ansible.builtin.apt:
+        update_cache: yes
+        state: present
+        name:
+          - git
+          - curl
+          - fzf
+
+- name: install and setup docker
+  hosts: localhost
+  become: yes
+
+  roles:
+    - name: geerlingguy.docker
+      vars:
+        docker_users:
+        - "{{ user }}"
+
+- name: Install and setup zsh
+  hosts: localhost
+  roles:
+    - name: gantsign.oh-my-zsh
+      vars:
+        oh_my_zsh_install: yes
+        users:
+          - username: "{{ user }}"
+            oh_my_zsh:
+              theme: "{{ zsh_theme }}"
+              plugins:
+                - git
+                - docker
+                - docker-compose
+
+    - name: markosamuli.asdf
+      vars:
+        asdf_init_shell: true
+
+  tasks:
+    - name: Set zsh
+      become: yes
+      ansible.builtin.user:
+        name: "{{ user }}"
+        shell: /bin/zsh
+
+    - name: Add $HOME/.local/bin to path
+      ansible.builtin.lineinfile:
+        state: present
+        path: ~/.zshrc
+        line: export PATH="$HOME/.local/bin:$PATH"
+
+- name: Install asdf and plugins
+  hosts: localhost
+  roles:
+    - role: markosamuli.asdf
+      vars:
+        asdf_plugins:
+          - name: "nodejs"
+            versions: ["16.3.0"]
+            global: "16.3.0"
+
+- name: Setup git config
+  hosts: localhost
+  tasks:
+    - name: Set global user.email
+      community.general.git_config:
+        name: user.email
+        scope: global
+        value: "{{ git_user_email }}"
+
+    - name: Set global user.name
+      community.general.git_config:
+        name: user.name
+        scope: global
+        value: "{{ git_user_name }}"
+
+    - name: Setup aliases to ~/.gitconfig
+      community.general.git_config:
+        name: "alias.{{ item.name }}"
+        scope: global
+        value: "{{ item.value }}"
+      with_items:
+        - { name: co, value: checkout }
+        - { name: ci, value: commit }
+        - { name: st, value: status }
+        - { name: br, value: branch }
+        - { name: hist, value: "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short" }
+        - { name: type, value: 'cat-file -t' }
+        - { name: dump, value: 'cat-file -p' }
+        - { name: commend, value: 'commit --amend' }
+
+    - name: Set vim as editor
+      community.general.git_config:
+        name: core.editor
+        scope: global
+        value: vim
+
+    - name: Copy git global ignore file
+      copy:
+        src: files/gitignore_global
+        dest: "~/.gitignore_global"
+
+    - name: Set global gitignore
+      community.general.git_config:
+        name: core.excludesFile
+        scope: global
+        value: ~/.gitignore_global

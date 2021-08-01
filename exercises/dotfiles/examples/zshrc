@@ -1,0 +1,16 @@
+# Пример сконфигурированного .zshrc файла
+
+export ZSH=$HOME/.oh-my-zsh
+
+ZSH_THEME="murilasso"
+
+DISABLE_AUTO_UPDATE="true"
+
+plugins=(git docker docker-compose fzf git-extras heroku laravel tmux zsh-syntax-highlighting)
+
+source $ZSH/oh-my-zsh.sh
+
+# BEGIN ANSIBLE MANAGED BLOCK: asdf
+
+# END ANSIBLE MANAGED BLOCK: asdf
+export PATH="$HOME/.local/bin:$PATH"

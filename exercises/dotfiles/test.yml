@@ -1,0 +1,9 @@
+- hosts: all
+  tasks:
+    - name: Check mandatory variables are defined
+      assert:
+        that:
+          - user is defined
+          - git_user_email is defined
+          - git_user_name is defined
+          - zsh_theme is defined
