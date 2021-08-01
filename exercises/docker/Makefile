@@ -22,3 +22,6 @@ pull_hub:
 
 run:
 	docker run -d -p 3000:3000 fastify:0.0.1
+
+run_hub:
+	docker run -d -p 3000:3000 xkxixnxgx/fastify:0.0.1
