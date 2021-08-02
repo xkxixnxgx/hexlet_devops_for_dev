@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ page_title }}</title>
+</head>
+<body>
+{% block content %}
+    enctype="multipart/form-data"
+    <form action="{{ url_for('picture.picture_add') }}" method="post">
+        <dl class="row">
+            <div class="col-1"></div>
+            <div class="col-2">
+                <div class="form-group">
+                    {{ form.name.label }}<br>
+                    {{ form.name() }}
+                </div>
+            </div>
+            <dl class="col-3">
+                <div class="form-group">
+                    <label for="exampleFormControlFile1">Файл изображения</label>
+                    <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                </div>
+            <div class="col-2"></div>
+        </dl>
+        <div class="row-1">
+            <div class="col-1"></div>
+            <div class="col-1">{{ form.submit }}</div>
+            <div class="col-1"></div>
+        </div>
+        <div class="row-1">
+            Мои изображения:
+        </div>
+    </form>
+{% endblock %}
+</body>
+</html>

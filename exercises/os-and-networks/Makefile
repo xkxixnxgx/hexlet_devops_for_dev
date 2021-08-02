@@ -2,6 +2,5 @@ test:
 	vagrant -v
 	test -e Vagrantfile || exit
 
-# BEGIN
-
-# END
+run:
+	export FLASK_APP=webapp && export FLASK_ENV=development && flask run

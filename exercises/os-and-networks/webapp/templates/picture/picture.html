@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+{% extends "base.html" %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <p class="text-secondary">
+                <h4>Пользователь: {{ current_user.username }}</h4>
+            </p>
+            <p class="text-secondary">
+                <h4>Мои изображения.</h4>
+            </p>
+            <a class="btn btn-success" href="picture_add" role="button">Добавить изображение</a>
+            <br>
+            <br>
+            <br>
+            {% for picture in form %}
+            <div class="row">
+                <div class="col-8">
+                <figure class="figure">
+                  <img src="{{ picture.url }}" class="figure-img img-fluid rounded" alt="Ошибка загрузки изображения {{ picture.url }}.">
+                  <figcaption class="figure-caption">Название: {{ picture.name }}<br>
+                      Дата: {{ picture.date_create }}<br>
+                  </figcaption>
+                </figure>
+                <br>
+                <a class="btn btn-info" href="{{ url_for('comment.comment_add') }}/{{ picture.id }}" role="button">Добавить комментарий</a>
+                <br>
+                <br>
+                </div>
+                <div class="col-4">
+                    <div class="overflow-auto">
+                        Комментарии:<br>
+                        {% for comment in picture.comments %}
+                            <br>
+                            {{ comment.date_create }}<br>
+                            {{ comment.comment }}<br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+{% endblock %}
+</body>
+</html>

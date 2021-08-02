@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-md navbar navbar-light fixed-top" style="background-color: #9ACD32;">
+    <a class="navbar-brand mb-0 h1" href="{{ url_for('picture.pictures') }}">
+        Изображения
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <ul class="navbar-nav navbar-right">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('user.logout') }}">Выйти</a>
+                </li>
+            {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('user.login') }}">Войти</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('user.register') }}">Регистрация</a>
+                </li>
+            </ul>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
