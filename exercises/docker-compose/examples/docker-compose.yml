@@ -1,0 +1,32 @@
+# Версия схемы, которую мы используем.
+# Зависит от установленной версии docker
+# https://docs.docker.com/compose/compose-file/
+version: "3"
+# Определим список сервисов — services
+# Эти сервисы будут частью нашего приложения
+services:
+
+  app: # Имя сервиса
+    build:
+      context: . # Контекст для сборки образа — текущая директория
+      dockerfile: Dockerfile # Имя докерфайла из которого будет собран образ
+    command: make start # Команда, которая будет выполнена после старта сервиса
+    ports: # Проброс портов
+      - "3000:8000"
+    # Перечисляем тома (volumes)
+    # Они будут подключены к файловой системе сервиса
+    # Например, всё что находится в . мы увидим в директории /app
+    volumes:
+      - ".:/app"
+      - "/tmp:/tmp"
+    # Сервис будет запущен, только после старта db
+    depends_on:
+      - db
+
+  db:
+    # Имя образа. Здесь мы используем базу данных Postgres
+    image: postgres:latest
+    environment: # Задаём переменные окружения
+      POSTGRES_PASSWORD: password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
