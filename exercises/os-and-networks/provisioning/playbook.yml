@@ -1,0 +1,39 @@
+- hosts: all
+  remote_user: root
+  gather_facts: false
+  tasks:
+    - name: Check for Python
+      raw: test -e /usr/bin/python3
+      changed_when: false
+      failed_when: false
+      register: check_python
+    
+    - name: Install Python
+      raw: apt -y update && apt install -y python-minimal
+      when: check_python.rc != 0
+
+    - name: install packages
+      ansible.builtin.apt:
+        update_cache: yes
+        state: present
+        name:
+          - curl
+      become: yes
+
+    - name: Install poetry
+      uri:
+        url: https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+        # url: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+    
+    - name: Install dependencies
+      ansible.builtin.shell: poetry install
+      args:
+        chdir: /vagrant/
+        creates: pyproject.toml
+
+    - name: Add FASTIFY_ADDRESS to /etc/environment
+      ansible.builtin.lineinfile:
+        path: /etc/environment
+        regexp: 'FLASK_APP='
+        line: FLASK_APP=webapp
+      become: yes

@@ -4,8 +4,28 @@ test:
 	make install
 	ansible-playbook -i inventory.ini test.yml --check
 
-# BEGIN
+install:
+	ansible-galaxy collection install -r requirements.yml
+	ansible-galaxy role install -r requirements.yml
 
-# END
+run-playbook:
+	ansible-playbook -i inventory.yml playbook.yml -v
+
+start:
+	vagrant up;
+
+stop:
+	vagrant halt
+
+into:
+	vagrant ssh
+
+restart:
+	vagrant reload
+
+remove:
+	vagrant destroy
+
+
 
 .PHONY: test
