@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  app:
+    image: test_tncr:v0.1
+    build:
+      context: ./app
+    working_dir: /app
+    command: poetry shell gunicorn -b localhost:5000 -w 1 api:app
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 5000:5000

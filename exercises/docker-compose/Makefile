@@ -25,3 +25,9 @@ compose-restart:
 
 compose-bash:
 	docker-compose application run bash
+
+run:
+	gunicorn -b localhost:5000 -w 1 api:app
+
+test:
+	pytest
